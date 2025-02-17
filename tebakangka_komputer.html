@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tebak Angka oleh Komputer</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+        h1 {
+            color: #6200ea;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        #tebakan {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #3700b3;
+        }
+        #jumlahTebakan {
+            font-size: 1.2em;
+            color: #555;
+        }
+        #hasil {
+            font-size: 1.2em;
+            color: #018786;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #6200ea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #3700b3;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Komputer akan menebak angka yang Anda pikirkan!</h1>
+        <p>Jawablah dengan jujur:</p>
+        <p id="tebakan"></p>
+        <div>
+            <button onclick="handleResponse('b')">Terlalu Besar</button>
+            <button onclick="handleResponse('k')">Terlalu Kecil</button>
+            <button onclick="handleResponse('y')">Benar!</button>
+        </div>
+        <p id="hasil"></p>
+        <p id="jumlahTebakan"></p>
+    </div>
+
+    <script>
+        let atas = 100;
+        let bawah = 1;
+        let tebakan = 0;
+        let tebakanSementara;
+
+        function smartCom() {
+            tebakanSementara = Math.floor((bawah + atas) / 2);
+            tebakan++;
+            document.getElementById("tebakan").textContent = `Apakah angkanya ${tebakanSementara}?`;
+            document.getElementById("jumlahTebakan").textContent = `Jumlah tebakan: ${tebakan}`;
+        }
+
+        function handleResponse(petunjuk) {
+            if (petunjuk === 'y') {
+                let pesan;
+                if (tebakan > 5) {
+                    pesan = `Aduuh susah sekali angka yang kamu pikirkan 😵 (${tebakan} tebakan)`;
+                } else {
+                    pesan = `Hebat bukan diriku hehehe bisa menebak dengan ${tebakan} tebakan saja 😎`;
+                }
+                alert(pesan);
+                document.getElementById("hasil").textContent = `Berhasil ditebak dalam ${tebakan} kali!`;
+                restart();
+            } else if (petunjuk === 'b') {
+                atas = tebakanSementara - 1;
+                smartCom();
+            } else if (petunjuk === 'k') {
+                bawah = tebakanSementara + 1;
+                smartCom();
+            }
+        }
+
+        function restart() {
+            const ulang = confirm("Mau ulang?");
+            if (ulang) {
+                atas = 100;
+                bawah = 1;
+                tebakan = 0;
+                smartCom();
+                document.getElementById("hasil").textContent = "";
+                document.getElementById("jumlahTebakan").textContent = "";
+            } else {
+                document.getElementById("hasil").textContent = "Terima kasih!";
+            }
+        }
+
+        // Mulai permainan
+        smartCom();
+    </script>
+</body>
+</html>
